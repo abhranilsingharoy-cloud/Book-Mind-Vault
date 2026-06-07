@@ -208,8 +208,8 @@ export default function KnowledgeGraph3D() {
         </points>
 
         <GraphNodes 
-          nodes={data.nodes} 
-          links={data.links} 
+          nodes={data.nodes || []} 
+          links={data.links || []} 
           onNodeClick={setSelectedNode} 
           onNodeHover={setHoveredNode} 
         />
