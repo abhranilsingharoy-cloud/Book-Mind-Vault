@@ -1,8 +1,8 @@
-# 🧠 MindVault - The AI-Powered Second Brain
+# 🧠 Book Mind Vault - The AI-Powered Second Brain
 
-MindVault is an intelligent, AI-powered bookmark manager and personal knowledge base. It goes beyond simply saving URLs by automatically extracting, summarizing, and categorizing your saved content, allowing you to visually explore your knowledge through an interactive 3D graph and chat with your library using advanced Retrieval-Augmented Generation (RAG).
+Book Mind Vault is an intelligent, AI-powered bookmark manager and personal knowledge base. It goes beyond simply saving URLs by automatically extracting, summarizing, and categorizing your saved content, allowing you to visually explore your knowledge through an interactive 3D graph and chat with your library using advanced Retrieval-Augmented Generation (RAG).
 
-![MindVault Architecture](https://img.shields.io/badge/Architecture-Next.js%2014%20App%20Router-blue)
+![Book Mind Vault Architecture](https://img.shields.io/badge/Architecture-Next.js%2014%20App%20Router-blue)
 ![Database](https://img.shields.io/badge/Database-Supabase%20%7C%20Pinecone-brightgreen)
 ![AI Models](https://img.shields.io/badge/AI-OpenAI%20gpt--4o--mini%20%7C%20text--embedding--3-orange)
 
