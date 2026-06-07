@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 MindVault - The AI-Powered Second Brain
 
-## Getting Started
+MindVault is an intelligent, AI-powered bookmark manager and personal knowledge base. It goes beyond simply saving URLs by automatically extracting, summarizing, and categorizing your saved content, allowing you to visually explore your knowledge through an interactive 3D graph and chat with your library using advanced Retrieval-Augmented Generation (RAG).
 
-First, run the development server:
+![MindVault Architecture](https://img.shields.io/badge/Architecture-Next.js%2014%20App%20Router-blue)
+![Database](https://img.shields.io/badge/Database-Supabase%20%7C%20Pinecone-brightgreen)
+![AI Models](https://img.shields.io/badge/AI-OpenAI%20gpt--4o--mini%20%7C%20text--embedding--3-orange)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Core Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+*   **🌐 1-Click Save Extension**: A sleek Chrome Extension to instantly save content from anywhere on the web.
+*   **🤖 AI Ingestion Pipeline**: Automatically crawls the URL, extracts clean text, and uses LLMs to generate a concise 3-bullet summary and precise semantic tags.
+*   **🌌 3D Knowledge Graph**: Explore your saved content in a beautiful, interactive 3D space built with React Three Fiber and a force-directed layout. 
+*   **🔍 Hybrid Semantic Search**: Find what you're looking for by *meaning*, not just keywords. Uses Reciprocal Rank Fusion (RRF) to combine Pinecone vector search with PostgreSQL Full-Text Search.
+*   **💬 "Ask Your Library" (RAG Chat)**: A conversational AI interface that strictly answers questions based on the context of your saved bookmarks, complete with inline citations and auto-generated follow-up questions.
+*   **🧠 Topic Clustering Engine**: Automatically groups similar bookmarks into named clusters in real-time using Online K-Means.
+*   **💡 Intelligent Memory System**: Prevents duplicate saves through semantic matching and automatically surfaces "Forgotten Gems" and "On This Day" memories.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+*   **Frontend**: Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS, Framer Motion
+*   **3D Visualization**: React Three Fiber, Three.js, d3-force-3d
+*   **Backend & Queue**: Next.js API Routes, BullMQ, Redis (for async background processing)
+*   **Databases**: Supabase (PostgreSQL with pgvector & Full-Text Search), Pinecone (Vector DB)
+*   **AI / ML**: OpenAI (`gpt-4o-mini`, `text-embedding-3-small`), Vercel AI SDK
+*   **Storage**: Cloudflare R2 (for HTML snapshot caching)
 
-## Learn More
+## 🚀 Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+### Prerequisites
+*   Node.js 18+
+*   A Supabase account
+*   A Pinecone account
+*   An OpenAI API Key
+*   A local Redis instance (for BullMQ)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/abhranilsingharoy-cloud/Book-Mind-Vault.git
+    cd Book-Mind-Vault
+    ```
 
-## Deploy on Vercel
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3.  **Environment Variables**
+    Create a `.env.local` file in the root directory and add your keys:
+    ```env
+    # Database (Supabase)
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    # Vector DB (Pinecone)
+    PINECONE_API_KEY=your_pinecone_key
+
+    # AI (OpenAI)
+    OPENAI_API_KEY=your_openai_key
+    EMBEDDING_PROVIDER=openai
+
+    # Queue (Redis)
+    REDIS_URL=redis://localhost:6379
+    ```
+
+4.  **Run Database Migrations**
+    Execute the SQL scripts found in `supabase/schema.sql` and `supabase/ml_migrations.sql` in your Supabase SQL Editor.
+
+5.  **Run the Development Server**
+    ```bash
+    npm run dev
+    ```
+    Visit `http://localhost:3000` to see the application.
+
+6.  **Run the Background Worker** (In a separate terminal)
+    ```bash
+    npx tsx workers/ingestion.worker.ts
+    ```
+
+### Chrome Extension Setup
+1. Navigate to the `extension/` directory.
+2. Run `npm install` and `npm run build`.
+3. Open Chrome, go to `chrome://extensions/`.
+4. Enable "Developer mode" in the top right.
+5. Click "Load unpacked" and select the `extension/dist/` folder.
+
+---
+
+**Designed and developed by Abhranil Singha Roy**
