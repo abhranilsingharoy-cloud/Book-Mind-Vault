@@ -1,8 +1,8 @@
 import { NextRequest } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { MindVaultAI } from '../../../lib/ml/orchestrator';
+import { BookMindVaultAI } from '../../../lib/ml/orchestrator';
 
-const ai = new MindVaultAI();
+const ai = new BookMindVaultAI();
 
 export async function POST(req: NextRequest) {
   try {

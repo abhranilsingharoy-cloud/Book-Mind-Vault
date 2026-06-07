@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Queue } from 'bullmq';
-import { redis } from '../../lib/redis';
-import { supabase } from '../../lib/supabase';
-import { QUEUE_NAME } from '../../workers/ingestion.worker';
+import { redis } from '../../../lib/redis';
+import { supabase } from '../../../lib/supabase';
+import { QUEUE_NAME } from '../../../workers/ingestion.worker';
 
 // Get user info from Clerk header or auth context. For now, mocking or using custom auth parsing depending on implementation.
 import { auth } from '@clerk/nextjs/server';

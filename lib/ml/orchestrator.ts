@@ -7,7 +7,7 @@ import { RAGEngine } from './rag';
 import { RecommendationSystem } from './recommendation';
 import { crawlUrl } from '../crawler'; // Assuming this exists from core implementation
 
-export class Book Mind VaultAI {
+export class BookMindVaultAI {
   private embedding: EmbeddingService;
   private search: SearchEngine;
   private summarizer: SummarizerService;
