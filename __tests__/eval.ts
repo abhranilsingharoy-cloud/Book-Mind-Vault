@@ -1,7 +1,7 @@
 import { Book Mind VaultAI } from '../lib/ml/orchestrator';
 import { generateObject } from 'ai';
 import { z } from 'zod';
-import { openai } from '@ai-sdk/openai';
+import { google } from '@ai-sdk/google';
 
 /**
  * Evaluation Harness for Book Mind Vault ML Layer
@@ -47,7 +47,7 @@ export class EvaluationHarness {
     for (const sample of samples) {
       try {
         const { object } = await generateObject({
-          model: openai('gpt-4o-mini'),
+          model: google('gemini-1.5-flash'),
           schema: gEvalSchema,
           system: "You are an expert evaluator. Score this summary from 1-5 on coherence, relevance, and factuality compared to the original text.",
           prompt: `Original Text: ${sample.originalText}\n\nGenerated Summary: ${sample.generatedSummary}`,

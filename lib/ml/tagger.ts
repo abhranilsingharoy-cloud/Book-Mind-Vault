@@ -1,6 +1,6 @@
 import { generateObject } from 'ai';
 import { z } from 'zod';
-import { openai } from '@ai-sdk/openai';
+import { google } from '@ai-sdk/google';
 import { EmbeddingService } from './embedding';
 
 export class TaggerService {
@@ -59,7 +59,7 @@ export class TaggerService {
 
     try {
       const { object } = await generateObject({
-        model: openai('gpt-4o-mini'),
+        model: google('gemini-1.5-flash'),
         schema,
         system: "You are a knowledge taxonomy expert. Generate exactly 5 tags for this saved content. Rules: (1) tags are lowercase, hyphenated if multi-word, (2) mix specific (react-hooks) and broad (javascript) tags, (3) include the primary topic, medium (tutorial/paper/news), and skill level (beginner/intermediate/advanced) when detectable, (4) return ONLY a JSON array of strings.",
         prompt: `Content to tag:\n${textExcerpt.substring(0, 3000)}`,

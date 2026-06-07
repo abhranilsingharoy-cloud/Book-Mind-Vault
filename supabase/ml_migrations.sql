@@ -23,6 +23,46 @@ CREATE TABLE IF NOT EXISTS clusters (
 ALTER TABLE bookmarks 
 ADD COLUMN IF NOT EXISTS cluster_id UUID REFERENCES clusters(id);
 
+-- Create Bookmark Chunks table for pgvector (Module 1)
+CREATE TABLE IF NOT EXISTS bookmark_chunks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  bookmark_id UUID REFERENCES bookmarks(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL,
+  chunk_index INTEGER NOT NULL,
+  chunk_text TEXT NOT NULL,
+  embedding vector(768), -- Gemini uses 768 dims
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Index for fast vector similarity search (IVFFlat or HNSW)
+-- Assuming we use HNSW for better performance on 768 dims:
+CREATE INDEX ON bookmark_chunks USING hnsw (embedding vector_cosine_ops);
+
+-- Create a function for similarity search (RPC)
+CREATE OR REPLACE FUNCTION match_chunks (
+  query_embedding vector(768),
+  match_threshold float,
+  match_count int,
+  p_user_id text
+)
+RETURNS TABLE (
+  bookmark_id uuid,
+  chunk_text text,
+  similarity float
+)
+LANGUAGE sql STABLE
+AS $$
+  select
+    bookmark_chunks.bookmark_id,
+    bookmark_chunks.chunk_text,
+    1 - (bookmark_chunks.embedding <=> query_embedding) as similarity
+  from bookmark_chunks
+  where bookmark_chunks.user_id = p_user_id
+    and 1 - (bookmark_chunks.embedding <=> query_embedding) > match_threshold
+  order by bookmark_chunks.embedding <=> query_embedding
+  limit match_count;
+$$;
+
 -- Optional: Token tracking table for billing/analytics
 CREATE TABLE IF NOT EXISTS token_usage (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

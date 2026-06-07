@@ -1,6 +1,6 @@
 import { generateObject } from 'ai';
 import { z } from 'zod';
-import { openai } from '@ai-sdk/openai';
+import { google } from '@ai-sdk/google';
 
 export class SummarizerService {
   private systemPrompt = `You are a precise knowledge extraction assistant for a personal Second Brain app. Your summaries help users recall why they saved content weeks later. Always be specific — never write generic summaries like 'This article discusses AI.' Instead write 'This article explains how RLHF training reduces LLM hallucinations by 40% using human preference datasets.'
@@ -40,7 +40,7 @@ Content: ${textExcerpt}`;
 
     try {
       const { object } = await generateObject({
-        model: openai('gpt-4o-mini'),
+        model: google('gemini-1.5-flash'),
         schema: this.schema,
         system: this.systemPrompt,
         prompt: userPrompt,

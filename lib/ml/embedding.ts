@@ -1,8 +1,8 @@
-import { openai } from '../openai';
-import { getPineconeIndex } from '../pinecone';
 import { supabase } from '../supabase';
+import { embedMany } from 'ai';
+import { google } from '@ai-sdk/google';
 
-export type EmbeddingProvider = 'openai' | 'ollama' | 'cohere';
+export type EmbeddingProvider = 'google' | 'ollama' | 'cohere';
 
 export interface ChunkMetadata {
   bookmarkId: string;
@@ -20,10 +20,9 @@ export interface ChunkMetadata {
 
 export class EmbeddingService {
   private provider: EmbeddingProvider;
-  private pineconeIndex = getPineconeIndex();
 
   constructor() {
-    this.provider = (process.env.EMBEDDING_PROVIDER as EmbeddingProvider) || 'openai';
+    this.provider = (process.env.EMBEDDING_PROVIDER as EmbeddingProvider) || 'google';
   }
 
   /**
@@ -32,11 +31,10 @@ export class EmbeddingService {
    * Overlap: 1 sentence.
    */
   public chunkText(text: string): string[] {
-    // a. Split into sentences handling abbreviations
     const sentences = text.split(/(?<=[.!?])\s+(?=[A-Z])/);
     
-    const TARGET_CHARS = 1200; // ~300 tokens
-    const MIN_CHARS = 200;     // ~50 tokens
+    const TARGET_CHARS = 1200; 
+    const MIN_CHARS = 200;     
     
     const chunks: string[] = [];
     let currentChunkSentences: string[] = [];
@@ -49,7 +47,6 @@ export class EmbeddingService {
 
       if (currentLength >= TARGET_CHARS) {
         chunks.push(currentChunkSentences.join(' ').trim());
-        // c. Overlap: carry the last 1 sentence
         const lastSentence = currentChunkSentences[currentChunkSentences.length - 1];
         currentChunkSentences = [lastSentence];
         currentLength = lastSentence.length + 1;
@@ -74,15 +71,13 @@ export class EmbeddingService {
     for (let i = 0; i < texts.length; i += BATCH_SIZE) {
       const batch = texts.slice(i, i + BATCH_SIZE);
 
-      if (this.provider === 'openai') {
-        const response = await openai.embeddings.create({
-          model: 'text-embedding-3-small',
-          input: batch,
+      if (this.provider === 'google') {
+        const { embeddings: batchEmbeddings } = await embedMany({
+          model: google.embedding('text-embedding-004'),
+          values: batch,
         });
-        embeddings.push(...response.data.map(d => d.embedding));
+        embeddings.push(...batchEmbeddings);
       } else if (this.provider === 'ollama') {
-        // Implementation for local Ollama nomic-embed-text
-        // This requires an http call to localhost:11434/api/embeddings
         for (const text of batch) {
           const res = await fetch('http://localhost:11434/api/embeddings', {
             method: 'POST',
@@ -93,33 +88,34 @@ export class EmbeddingService {
           embeddings.push(data.embedding);
         }
       } else if (this.provider === 'cohere') {
-        // Mock Cohere implementation
         console.warn('Cohere not fully implemented, falling back to mock zeros.');
-        embeddings.push(...batch.map(() => new Array(1536).fill(0)));
+        embeddings.push(...batch.map(() => new Array(768).fill(0)));
       }
     }
 
     return embeddings;
   }
 
+  /**
+   * Upserts text chunks and their embeddings into Supabase pgvector table.
+   */
   public async upsertChunks(userId: string, metadataList: ChunkMetadata[], vectors: number[][]): Promise<void> {
     if (metadataList.length !== vectors.length) throw new Error("Metadata and vectors length mismatch");
 
-    const pineconeVectors = vectors.map((vec, i) => {
+    const rows = vectors.map((vec, i) => {
       const meta = metadataList[i];
       return {
-        id: `${meta.bookmarkId}-chunk-${meta.chunkIndex}`,
-        values: vec,
-        metadata: { ...meta, savedAt: meta.savedAt } // ensure types match
+        bookmark_id: meta.bookmarkId,
+        user_id: meta.userId,
+        chunk_index: meta.chunkIndex,
+        chunk_text: meta.chunkText,
+        embedding: `[${vec.join(',')}]`,
       };
     });
 
-    // Batch upsert to Pinecone
-    const BATCH_SIZE = 100;
-    for (let i = 0; i < pineconeVectors.length; i += BATCH_SIZE) {
-      const batch = pineconeVectors.slice(i, i + BATCH_SIZE);
-      await this.pineconeIndex.namespace(userId).upsert(batch);
-    }
+    // Batch insert into Supabase
+    const { error } = await supabase.from('bookmark_chunks').insert(rows);
+    if (error) throw error;
   }
 
   /**
@@ -139,15 +135,27 @@ export class EmbeddingService {
   }
 
   /**
-   * Queries Pinecone for the most similar bookmarks.
+   * Queries Supabase pgvector using the match_chunks RPC function.
    */
   public async findRelated(userId: string, queryVector: number[], topK: number = 5): Promise<ChunkMetadata[]> {
-    const results = await this.pineconeIndex.namespace(userId).query({
-      vector: queryVector,
-      topK,
-      includeMetadata: true,
+    const { data, error } = await supabase.rpc('match_chunks', {
+      query_embedding: `[${queryVector.join(',')}]`,
+      match_threshold: 0.5,
+      match_count: topK,
+      p_user_id: userId
     });
 
-    return results.matches.map(m => m.metadata as unknown as ChunkMetadata);
+    if (error) {
+      console.error("RPC match_chunks Error:", error);
+      return [];
+    }
+
+    return (data || []).map((row: any) => ({
+      bookmarkId: row.bookmark_id,
+      chunkText: row.chunk_text,
+      // The RPC only returns limited fields; in a real app you might join with bookmarks table to get full metadata.
+      userId: userId,
+      url: '', title: '', chunkIndex: 0, totalChunks: 0, domain: '', savedAt: 0, contentType: ''
+    } as ChunkMetadata));
   }
 }

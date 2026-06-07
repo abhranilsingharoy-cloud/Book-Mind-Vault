@@ -2,7 +2,7 @@ import { supabase } from '../supabase';
 import { EmbeddingService } from './embedding';
 import { generateObject } from 'ai';
 import { z } from 'zod';
-import { openai } from '@ai-sdk/openai';
+import { google } from '@ai-sdk/google';
 
 const HSL_COLORS = [
   'hsl(264,80%,65%)', 'hsl(174,60%,45%)', 'hsl(28,90%,55%)',
@@ -147,7 +147,7 @@ export class ClusteringService {
 
     try {
       const { object } = await generateObject({
-        model: openai('gpt-4o-mini'),
+        model: google('gemini-1.5-flash'),
         schema,
         system: "Given these 5 article titles from a user's saved content, generate a 2-3 word cluster name that best describes the theme. Return ONLY the name.",
         prompt: JSON.stringify(titles),

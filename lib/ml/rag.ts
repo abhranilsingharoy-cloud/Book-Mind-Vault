@@ -1,7 +1,7 @@
 import { EmbeddingService, ChunkMetadata } from './embedding';
 import { generateObject, streamText, generateText } from 'ai';
 import { z } from 'zod';
-import { openai } from '@ai-sdk/openai';
+import { google } from '@ai-sdk/google';
 
 export type QueryType = 'factual' | 'exploratory' | 'comparative' | 'temporal';
 
@@ -21,7 +21,7 @@ export class RAGEngine {
     });
 
     const classification = await generateObject({
-      model: openai('gpt-4o-mini'),
+      model: google('gemini-1.5-flash'),
       schema: classificationSchema,
       prompt: `Classify this user query into one of: factual, exploratory, comparative, temporal.\nQuery: ${query}`,
     });
@@ -32,7 +32,7 @@ export class RAGEngine {
     // HyDE for short queries
     if (wordCount < 5) {
       const hydeResult = await generateText({
-        model: openai('gpt-4o-mini'),
+        model: google('gemini-1.5-flash'),
         prompt: `Write a 2-sentence expert answer to: ${query}`,
       });
       expandedQuery = `${query}\n\n${hydeResult.text}`;
@@ -56,7 +56,7 @@ export class RAGEngine {
     await Promise.all(top12.map(async (chunk) => {
       try {
         const result = await generateObject({
-          model: openai('gpt-4o-mini'),
+          model: google('gemini-1.5-flash'),
           schema: z.object({ score: z.number().min(1).max(10) }),
           system: "Rate how relevant this text is to the question on a scale 1-10. Return ONLY the number.",
           prompt: `Question: '${originalQuery}'\nText: ${chunk.chunkText}`,
@@ -114,7 +114,7 @@ export class RAGEngine {
     ${contextString}`;
 
     const stream = await streamText({
-      model: openai('gpt-4o-mini'),
+      model: google('gemini-1.5-flash'),
       system: systemPrompt,
       messages: messages,
     });
@@ -132,7 +132,7 @@ export class RAGEngine {
   public async generateFollowUps(topic: string): Promise<string[]> {
     try {
       const { object } = await generateObject({
-        model: openai('gpt-4o-mini'),
+        model: google('gemini-1.5-flash'),
         schema: z.object({ questions: z.array(z.string().max(60)).length(3) }),
         prompt: `Based on this answer about '${topic}', suggest 3 short follow-up questions (under 8 words each) the user might want to ask.`,
         temperature: 0.5,

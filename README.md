@@ -11,7 +11,7 @@ Book Mind Vault is an intelligent, AI-powered bookmark manager and personal know
 *   **🌐 1-Click Save Extension**: A sleek Chrome Extension to instantly save content from anywhere on the web.
 *   **🤖 AI Ingestion Pipeline**: Automatically crawls the URL, extracts clean text, and uses LLMs to generate a concise 3-bullet summary and precise semantic tags.
 *   **🌌 3D Knowledge Graph**: Explore your saved content in a beautiful, interactive 3D space built with React Three Fiber and a force-directed layout. 
-*   **🔍 Hybrid Semantic Search**: Find what you're looking for by *meaning*, not just keywords. Uses Reciprocal Rank Fusion (RRF) to combine Pinecone vector search with PostgreSQL Full-Text Search.
+*   **🔍 Hybrid Semantic Search**: Find what you're looking for by *meaning*, not just keywords. Uses Reciprocal Rank Fusion (RRF) to combine Supabase pgvector search with PostgreSQL Full-Text Search.
 *   **💬 "Ask Your Library" (RAG Chat)**: A conversational AI interface that strictly answers questions based on the context of your saved bookmarks, complete with inline citations and auto-generated follow-up questions.
 *   **🧠 Topic Clustering Engine**: Automatically groups similar bookmarks into named clusters in real-time using Online K-Means.
 *   **💡 Intelligent Memory System**: Prevents duplicate saves through semantic matching and automatically surfaces "Forgotten Gems" and "On This Day" memories.
@@ -21,8 +21,8 @@ Book Mind Vault is an intelligent, AI-powered bookmark manager and personal know
 *   **Frontend**: Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS, Framer Motion
 *   **3D Visualization**: React Three Fiber, Three.js, d3-force-3d
 *   **Backend & Queue**: Next.js API Routes, BullMQ, Redis (for async background processing)
-*   **Databases**: Supabase (PostgreSQL with pgvector & Full-Text Search), Pinecone (Vector DB)
-*   **AI / ML**: OpenAI (`gpt-4o-mini`, `text-embedding-3-small`), Vercel AI SDK
+*   **Databases**: Supabase (PostgreSQL with pgvector & Full-Text Search)
+*   **AI / ML**: Google Gemini (`gemini-1.5-flash`, `text-embedding-004`), Vercel AI SDK
 *   **Storage**: Cloudflare R2 (for HTML snapshot caching)
 
 ## 🚀 Getting Started
@@ -30,8 +30,7 @@ Book Mind Vault is an intelligent, AI-powered bookmark manager and personal know
 ### Prerequisites
 *   Node.js 18+
 *   A Supabase account
-*   A Pinecone account
-*   An OpenAI API Key
+*   A Google AI Studio (Gemini) API Key
 *   A local Redis instance (for BullMQ)
 
 ### Installation
@@ -44,7 +43,7 @@ Book Mind Vault is an intelligent, AI-powered bookmark manager and personal know
 
 2.  **Install dependencies**
     ```bash
-    npm install
+    npm install --legacy-peer-deps
     ```
 
 3.  **Environment Variables**
@@ -54,12 +53,9 @@ Book Mind Vault is an intelligent, AI-powered bookmark manager and personal know
     NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
     NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-    # Vector DB (Pinecone)
-    PINECONE_API_KEY=your_pinecone_key
-
-    # AI (OpenAI)
-    OPENAI_API_KEY=your_openai_key
-    EMBEDDING_PROVIDER=openai
+    # AI (Google Gemini - Free Tier)
+    GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_key
+    EMBEDDING_PROVIDER=google
 
     # Queue (Redis)
     REDIS_URL=redis://localhost:6379
