@@ -3,37 +3,16 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Sphere, MeshDistortMaterial } from '@react-three/drei';
+import dynamic from 'next/dynamic';
 
-const NeuralSphere = () => {
-  return (
-    <Sphere visible args={[1, 100, 200]} scale={2.5}>
-      <MeshDistortMaterial 
-        color="#6C47FF" 
-        attach="material" 
-        distort={0.4} 
-        speed={1.5} 
-        roughness={0} 
-        transparent 
-        opacity={0.8}
-        wireframe
-      />
-    </Sphere>
-  );
-};
+const Scene = dynamic(() => import('../components/Scene'), { ssr: false });
 
 export default function Home() {
   return (
     <main className="relative w-screen h-screen overflow-hidden bg-background">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
-        <Canvas>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={1} />
-          <NeuralSphere />
-          <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
-        </Canvas>
+        <Scene />
       </div>
 
       {/* Content overlay */}
