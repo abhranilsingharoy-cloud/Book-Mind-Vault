@@ -71,7 +71,7 @@ function App() {
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#6C47FF] to-[#00D4FF] flex items-center justify-center">
           <BookmarkPlus size={18} className="text-white" />
         </div>
-        <h1 className="font-bold text-lg tracking-wide">MindVault</h1>
+        <h1 className="font-bold text-lg tracking-wide">Book Mind Vault</h1>
       </div>
 
       <div className="mb-6">

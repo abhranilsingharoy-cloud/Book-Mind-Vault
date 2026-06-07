@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
 
     const contextString = contextChunks.join('\n\n---\n\n');
 
-    const systemPrompt = `You are the user's personal knowledge assistant for MindVault. Answer using ONLY the provided context. Cite which saved article each point comes from using [Source: title, url]. If the context doesn't contain the answer, say so — do not hallucinate.
+    const systemPrompt = `You are the user's personal knowledge assistant for Book Mind Vault. Answer using ONLY the provided context. Cite which saved article each point comes from using [Source: title, url]. If the context doesn't contain the answer, say so — do not hallucinate.
 
 CONTEXT LIBRARY:
 ${contextString}`;

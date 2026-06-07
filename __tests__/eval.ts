@@ -1,13 +1,13 @@
-import { MindVaultAI } from '../lib/ml/orchestrator';
+import { Book Mind VaultAI } from '../lib/ml/orchestrator';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { openai } from '@ai-sdk/openai';
 
 /**
- * Evaluation Harness for MindVault ML Layer
+ * Evaluation Harness for Book Mind Vault ML Layer
  */
 export class EvaluationHarness {
-  private ai = new MindVaultAI();
+  private ai = new Book Mind VaultAI();
 
   /**
    * (a) Evaluate Recall@10 on synthetic query-bookmark pairs

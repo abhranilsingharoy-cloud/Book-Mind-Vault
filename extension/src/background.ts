@@ -3,14 +3,14 @@ const API_URL = 'http://localhost:3000/api/bookmarks'; // Use prod URL in produc
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "save-quote",
-    title: "Save to MindVault",
+    title: "Save to Book Mind Vault",
     contexts: ["selection"]
   });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "save-quote" && info.selectionText) {
-    saveToMindVault({
+    saveToBook Mind Vault({
       url: tab?.url || '',
       title: tab?.title || '',
       selectedText: info.selectionText
@@ -20,7 +20,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
 chrome.commands.onCommand.addListener((command, tab) => {
   if (command === "save-bookmark") {
-    saveToMindVault({
+    saveToBook Mind Vault({
       url: tab?.url || '',
       title: tab?.title || '',
       selectedText: ''
@@ -28,7 +28,7 @@ chrome.commands.onCommand.addListener((command, tab) => {
   }
 });
 
-async function saveToMindVault(data: { url: string, title: string, selectedText: string }, tabId?: number) {
+async function saveToBook Mind Vault(data: { url: string, title: string, selectedText: string }, tabId?: number) {
   try {
     const { token } = await chrome.storage.local.get('token');
     
@@ -50,7 +50,7 @@ async function saveToMindVault(data: { url: string, title: string, selectedText:
         chrome.tabs.sendMessage(tabId, { action: "show-toast", message: "Saved ✓" });
       }).catch(e => console.error("Scripting error", e));
     } else {
-      console.error('Failed to save to MindVault', await response.text());
+      console.error('Failed to save to Book Mind Vault', await response.text());
     }
   } catch (error) {
     console.error('Error saving:', error);

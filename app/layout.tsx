@@ -8,7 +8,7 @@ const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono" });
 
 export const metadata: Metadata = {
-  title: "MindVault - AI-Powered Second Brain",
+  title: "Book Mind Vault - AI-Powered Second Brain",
   description: "Your knowledge. Your cosmos. An AI-powered bookmark manager with 3D spatial visualization.",
 };
 

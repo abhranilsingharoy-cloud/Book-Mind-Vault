@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "MindVault",
+  "name": "Book Mind Vault",
   "version": "1.0.0",
   "description": "Save your knowledge to your personal universe.",
   "permissions": [
@@ -32,7 +32,7 @@
         "default": "Ctrl+Shift+S",
         "mac": "Command+Shift+S"
       },
-      "description": "Quick save to MindVault"
+      "description": "Quick save to Book Mind Vault"
     }
   }
 }

@@ -45,7 +45,7 @@ export default function Home() {
           className="text-center"
         >
           <h1 className="text-6xl md:text-8xl font-heading font-bold mb-4 drop-shadow-2xl text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60" style={{ transform: 'translateZ(50px)' }}>
-            MindVault
+            Book Mind Vault
           </h1>
           <motion.p 
             initial={{ opacity: 0 }}

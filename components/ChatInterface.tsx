@@ -51,7 +51,7 @@ export default function ChatInterface() {
             </div>
             <h3 className="text-2xl font-heading font-bold mb-2">Ask anything about your knowledge</h3>
             <p className="text-textSecondary mb-8 max-w-md">
-              MindVault will search through all your saved bookmarks, articles, and quotes to give you an exact answer.
+              Book Mind Vault will search through all your saved bookmarks, articles, and quotes to give you an exact answer.
             </p>
             <div className="flex flex-wrap justify-center gap-3 max-w-2xl">
               {SUGGESTIONS.map((s, i) => (

@@ -14,7 +14,7 @@ export default function DashboardLayout({
       <aside className="w-20 md:w-64 h-full glass-panel border-y-0 border-l-0 rounded-none z-20 flex flex-col justify-between py-6 relative" style={{ transform: 'translateZ(20px)' }}>
         <div>
           <div className="px-6 mb-10 hidden md:block">
-            <h2 className="font-heading font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">MindVault</h2>
+            <h2 className="font-heading font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Book Mind Vault</h2>
           </div>
           
           <nav className="flex flex-col gap-4 px-4">
