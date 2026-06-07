@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "MindVault",
+  "version": "1.0.0",
+  "description": "Save your knowledge to your personal universe.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "contextMenus",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://app.mindvault.ai/*",
+    "http://localhost:3000/*"
+  ],
+  "action": {
+    "default_popup": "index.html"
+  },
+  "background": {
+    "service_worker": "src/background.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content.ts"]
+    }
+  ],
+  "commands": {
+    "save-bookmark": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "Quick save to MindVault"
+    }
+  }
+}
