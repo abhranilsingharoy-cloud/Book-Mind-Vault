@@ -28,7 +28,7 @@ export default function DashboardLayout({
           <NavItem href="/dashboard/settings" icon={<Settings size={24} />} label="Settings" />
           <div className="flex items-center justify-center md:justify-start px-2 mt-4">
             <UserButton afterSignOutUrl="/" />
-            <span className="ml-3 hidden md:inline text-sm font-medium text-textSecondary">Account</span>
+            <Link href="/dashboard/settings" className="ml-3 hidden md:inline text-sm font-medium text-textSecondary hover:text-white">Account</Link>
           </div>
         </div>
       </aside>

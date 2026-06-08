@@ -1,10 +1,24 @@
 'use client';
 
 import React, { useState } from 'react';
-import { User, Bell, Shield, Palette, Zap, Save } from 'lucide-react';
+import { User, Bell, Shield, Palette, Zap, Save, Check } from 'lucide-react';
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('account');
+  const [activeTheme, setActiveTheme] = useState('deep-space');
+
+  // Form states for mocking functionality
+  const [notifications, setNotifications] = useState({
+    email: true,
+    push: false,
+    updates: true,
+    marketing: false,
+  });
+
+  const [security, setSecurity] = useState({
+    2fa: false,
+    sessionTimeout: '30',
+  });
 
   const tabs = [
     { id: 'account', label: 'Account Profile', icon: <User size={18} /> },
@@ -13,6 +27,10 @@ export default function SettingsPage() {
     { id: 'security', label: 'Security & Privacy', icon: <Shield size={18} /> },
     { id: 'advanced', label: 'Advanced Features', icon: <Zap size={18} /> },
   ];
+
+  const handleToggle = (settingGroup: any, key: string, setFunc: any) => {
+    setFunc({ ...settingGroup, [key]: !settingGroup[key] });
+  };
 
   return (
     <div className="min-h-screen p-8 max-w-6xl mx-auto overflow-y-auto pb-24">
@@ -88,36 +106,48 @@ export default function SettingsPage() {
                 <div className="space-y-8">
                   <div>
                     <h3 className="text-lg font-medium mb-4">Theme</h3>
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="border-2 border-primary bg-background rounded-xl p-4 cursor-pointer relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      
+                      {/* Deep Space Theme */}
+                      <div 
+                        onClick={() => setActiveTheme('deep-space')}
+                        className={`border-2 ${activeTheme === 'deep-space' ? 'border-primary shadow-[0_0_15px_rgba(108,71,255,0.3)]' : 'border-white/10'} bg-background rounded-xl p-4 cursor-pointer relative overflow-hidden transition-all`}
+                      >
                         <div className="w-full h-24 bg-surface rounded-lg mb-3 flex items-center justify-center border border-white/5">
                           <div className="w-12 h-12 rounded-full bg-background border border-white/10"></div>
                         </div>
                         <p className="text-center font-medium">Deep Space</p>
+                        {activeTheme === 'deep-space' && <Check size={16} className="absolute top-2 right-2 text-primary" />}
                       </div>
-                      <div className="border border-white/10 bg-white rounded-xl p-4 cursor-pointer opacity-50 relative overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] rounded-xl z-10">
-                          <span className="bg-black/80 text-xs px-2 py-1 rounded text-white">Coming Soon</span>
-                        </div>
+
+                      {/* Light Matter Theme */}
+                      <div 
+                        onClick={() => setActiveTheme('light-matter')}
+                        className={`border-2 ${activeTheme === 'light-matter' ? 'border-primary shadow-[0_0_15px_rgba(108,71,255,0.3)]' : 'border-white/10'} bg-white rounded-xl p-4 cursor-pointer relative overflow-hidden transition-all`}
+                      >
                         <div className="w-full h-24 bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
-                          <div className="w-12 h-12 rounded-full bg-white shadow-sm"></div>
+                          <div className="w-12 h-12 rounded-full bg-white shadow-sm border border-gray-200"></div>
                         </div>
                         <p className="text-center font-medium text-gray-800">Light Matter</p>
+                        {activeTheme === 'light-matter' && <Check size={16} className="absolute top-2 right-2 text-primary" />}
                       </div>
-                      <div className="border border-white/10 bg-[#0A192F] rounded-xl p-4 cursor-pointer opacity-50 relative overflow-hidden">
-                         <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] rounded-xl z-10">
-                          <span className="bg-black/80 text-xs px-2 py-1 rounded text-white">Coming Soon</span>
-                        </div>
+
+                      {/* Nebula Theme */}
+                      <div 
+                        onClick={() => setActiveTheme('nebula')}
+                        className={`border-2 ${activeTheme === 'nebula' ? 'border-primary shadow-[0_0_15px_rgba(108,71,255,0.3)]' : 'border-white/10'} bg-[#0A192F] rounded-xl p-4 cursor-pointer relative overflow-hidden transition-all`}
+                      >
                         <div className="w-full h-24 bg-[#112240] rounded-lg mb-3 flex items-center justify-center">
                           <div className="w-12 h-12 rounded-full bg-[#0A192F] shadow-sm"></div>
                         </div>
                         <p className="text-center font-medium text-blue-100">Nebula</p>
+                        {activeTheme === 'nebula' && <Check size={16} className="absolute top-2 right-2 text-primary" />}
                       </div>
+
                     </div>
                   </div>
                   
-                  <div className="space-y-4">
+                  <div className="space-y-4 mt-8">
                     <h3 className="text-lg font-medium">Animation Intensity</h3>
                     <div className="flex items-center gap-4">
                       <span className="text-textSecondary text-sm">Minimal</span>
@@ -129,18 +159,107 @@ export default function SettingsPage() {
               </div>
             )}
 
-            {['notifications', 'security', 'advanced'].includes(activeTab) && (
-              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 flex flex-col items-center justify-center h-full text-center py-20">
-                <div className="w-20 h-20 bg-surface rounded-full flex items-center justify-center mb-6 border border-white/5 shadow-[0_0_30px_rgba(108,71,255,0.1)]">
-                  <Shield size={32} className="text-primary" />
+            {activeTab === 'notifications' && (
+              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <h2 className="text-2xl font-bold mb-6 text-white border-b border-white/10 pb-4">Notifications</h2>
+                
+                <div className="space-y-6">
+                  {[
+                    { key: 'email', title: 'Email Notifications', desc: 'Receive daily digests of your vault activity.' },
+                    { key: 'push', title: 'Push Notifications', desc: 'Get instant alerts for AI insights and processing completion.' },
+                    { key: 'updates', title: 'Product Updates', desc: 'Hear about new features and updates.' },
+                    { key: 'marketing', title: 'Marketing Emails', desc: 'Receive occasional offers and promotional content.' },
+                  ].map((item) => (
+                    <div key={item.key} className="flex items-center justify-between p-4 rounded-xl bg-surface border border-white/5 hover:border-white/10 transition-colors">
+                      <div>
+                        <h3 className="font-medium text-white">{item.title}</h3>
+                        <p className="text-sm text-textSecondary">{item.desc}</p>
+                      </div>
+                      <button 
+                        onClick={() => handleToggle(notifications, item.key, setNotifications)}
+                        className={`w-12 h-6 rounded-full transition-colors relative ${notifications[item.key as keyof typeof notifications] ? 'bg-primary' : 'bg-gray-600'}`}
+                      >
+                        <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${notifications[item.key as keyof typeof notifications] ? 'translate-x-7' : 'translate-x-1'}`} />
+                      </button>
+                    </div>
+                  ))}
                 </div>
-                <h2 className="text-2xl font-bold mb-2">Module Offline</h2>
-                <p className="text-textSecondary max-w-md">
-                  This configuration sector is currently being upgraded by our orbital engineers. Check back soon.
-                </p>
               </div>
             )}
 
+            {activeTab === 'security' && (
+              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <h2 className="text-2xl font-bold mb-6 text-white border-b border-white/10 pb-4">Security & Privacy</h2>
+                
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-surface border border-white/5">
+                    <div>
+                      <h3 className="font-medium text-white">Two-Factor Authentication</h3>
+                      <p className="text-sm text-textSecondary">Add an extra layer of security to your account.</p>
+                    </div>
+                    <button 
+                      onClick={() => handleToggle(security, '2fa', setSecurity)}
+                      className={`w-12 h-6 rounded-full transition-colors relative ${security['2fa'] ? 'bg-primary' : 'bg-gray-600'}`}
+                    >
+                      <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${security['2fa'] ? 'translate-x-7' : 'translate-x-1'}`} />
+                    </button>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-surface border border-white/5 space-y-4">
+                    <div>
+                      <h3 className="font-medium text-white">Auto-Logout Session</h3>
+                      <p className="text-sm text-textSecondary">Automatically log out after a period of inactivity.</p>
+                    </div>
+                    <select 
+                      value={security.sessionTimeout}
+                      onChange={(e) => setSecurity({...security, sessionTimeout: e.target.value})}
+                      className="bg-background border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary w-full max-w-xs"
+                    >
+                      <option value="15">15 Minutes</option>
+                      <option value="30">30 Minutes</option>
+                      <option value="60">1 Hour</option>
+                      <option value="never">Never</option>
+                    </select>
+                  </div>
+
+                  <div className="pt-4 mt-8 border-t border-white/10">
+                    <h3 className="text-red-400 font-medium mb-2">Danger Zone</h3>
+                    <p className="text-sm text-textSecondary mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+                    <button className="px-4 py-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg font-medium hover:bg-red-500/20 transition-colors">
+                      Delete Account
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'advanced' && (
+              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <h2 className="text-2xl font-bold mb-6 text-white border-b border-white/10 pb-4">Advanced Features</h2>
+                
+                <div className="space-y-6">
+                  <div className="p-4 rounded-xl bg-surface border border-white/5">
+                    <h3 className="font-medium text-white mb-2">API Access</h3>
+                    <p className="text-sm text-textSecondary mb-4">Generate API keys to interact with your vault programmatically.</p>
+                    <div className="flex items-center gap-4">
+                      <input type="text" readOnly value="sk_live_**********************" className="bg-background border border-white/10 rounded-lg px-4 py-2 text-textSecondary w-full font-mono text-sm" />
+                      <button className="px-4 py-2 bg-primary/20 text-primary rounded-lg font-medium hover:bg-primary/30 transition-colors whitespace-nowrap">
+                        Reveal Key
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-surface border border-white/5">
+                    <h3 className="font-medium text-white mb-2">Experimental Features</h3>
+                    <p className="text-sm text-textSecondary mb-4">Get early access to unreleased features like spatial VR viewing.</p>
+                    <button className="px-4 py-2 bg-white/5 text-white border border-white/10 rounded-lg font-medium hover:bg-white/10 transition-colors">
+                      Join Beta Program
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            
           </div>
           
           <div className="mt-6 flex justify-end">
