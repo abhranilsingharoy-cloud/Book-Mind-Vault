@@ -56,6 +56,7 @@ Book Mind Vault is an intelligent, AI-powered bookmark manager and personal know
     # Database (Supabase)
     NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
     NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+    SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
     # AI (Google Gemini - Free Tier)
     GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_key
@@ -66,7 +67,10 @@ Book Mind Vault is an intelligent, AI-powered bookmark manager and personal know
     ```
 
 4.  **Run Database Migrations**
-    Execute the SQL scripts found in `supabase/schema.sql` and `supabase/ml_migrations.sql` in your Supabase SQL Editor.
+    Execute the following SQL scripts in your Supabase SQL Editor in this order:
+    1. `supabase/schema.sql` (Creates base tables)
+    2. `supabase/ml_migrations.sql` (Adds pgvector and RRF functions)
+    3. `supabase/disable_rls_fix.sql` (Disables RLS so our Clerk-protected Next.js backend can safely write data)
 
 5.  **Run the Development Server**
     ```bash
