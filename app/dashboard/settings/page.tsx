@@ -16,7 +16,7 @@ export default function SettingsPage() {
   });
 
   const [security, setSecurity] = useState({
-    2fa: false,
+    '2fa': false,
     sessionTimeout: '30',
   });
 
