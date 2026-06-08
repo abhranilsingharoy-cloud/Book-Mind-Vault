@@ -88,7 +88,7 @@ export default function CollectionsPage() {
               placeholder="Search collections..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+              className="w-full bg-surface border border-textPrimary/10 rounded-xl pl-10 pr-4 py-2.5 text-textPrimary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
             />
           </div>
           <button 
@@ -110,21 +110,21 @@ export default function CollectionsPage() {
           {filteredCollections.map((collection) => (
             <div 
               key={collection.id} 
-              className="glass-card p-6 group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(108,71,255,0.15)]"
+              className="glass-card p-6 group cursor-pointer hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(var(--primary),0.15)]"
             >
               <div className="flex justify-between items-start mb-6">
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${collection.color || 'from-primary to-secondary'} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   <Folder size={24} className="text-white" />
                 </div>
-                <button className="text-textSecondary hover:text-white p-1 rounded-md hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100">
+                <button className="text-textSecondary hover:text-textPrimary p-1 rounded-md hover:bg-textPrimary/10 transition-colors opacity-0 group-hover:opacity-100">
                   <MoreVertical size={18} />
                 </button>
               </div>
               
-              <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{collection.name}</h3>
+              <h3 className="text-xl font-bold text-textPrimary mb-2 group-hover:text-primary transition-colors">{collection.name}</h3>
               <p className="text-textSecondary text-sm font-mono">{collection.count} saved items</p>
               
-              <div className="mt-6 w-full h-1 bg-white/5 rounded-full overflow-hidden">
+              <div className="mt-6 w-full h-1 bg-textPrimary/10 rounded-full overflow-hidden">
                 <div 
                   className={`h-full bg-gradient-to-r ${collection.color || 'from-primary to-secondary'} opacity-50 group-hover:opacity-100 transition-opacity`} 
                   style={{ width: `${Math.max(10, Math.min(100, (collection.count || 0) * 5))}%` }}
@@ -136,21 +136,21 @@ export default function CollectionsPage() {
           {/* Create New Card */}
           <div 
             onClick={() => setIsModalOpen(true)}
-            className="glass-card p-6 border-dashed border-2 border-white/10 hover:border-primary/50 flex flex-col items-center justify-center min-h-[200px] cursor-pointer group transition-colors bg-transparent"
+            className="glass-card p-6 border-dashed border-2 border-textPrimary/20 hover:border-primary/50 flex flex-col items-center justify-center min-h-[200px] cursor-pointer group transition-colors bg-transparent"
           >
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
               <Plus size={24} className="text-primary" />
             </div>
-            <h3 className="text-lg font-medium text-textSecondary group-hover:text-white transition-colors">Create Collection</h3>
+            <h3 className="text-lg font-medium text-textSecondary group-hover:text-textPrimary transition-colors">Create Collection</h3>
           </div>
         </div>
       )}
 
       {/* Create Collection Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
           <div className="glass-panel w-full max-w-md p-6 animate-in fade-in zoom-in-95 duration-200">
-            <h2 className="text-2xl font-bold text-white mb-6">Create New Collection</h2>
+            <h2 className="text-2xl font-bold text-textPrimary mb-6">Create New Collection</h2>
             
             <form onSubmit={handleCreateCollection} className="space-y-6">
               <div>
@@ -161,7 +161,7 @@ export default function CollectionsPage() {
                   required
                   value={newCollectionName}
                   onChange={(e) => setNewCollectionName(e.target.value)}
-                  className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                  className="w-full bg-surface border border-textPrimary/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                   placeholder="e.g. AI Research"
                 />
               </div>
@@ -179,7 +179,7 @@ export default function CollectionsPage() {
                     <div 
                       key={color}
                       onClick={() => setNewCollectionColor(color)}
-                      className={`w-full aspect-square rounded-full bg-gradient-to-br ${color} cursor-pointer transition-transform hover:scale-110 ${newCollectionColor === color ? 'ring-2 ring-white ring-offset-2 ring-offset-background' : ''}`}
+                      className={`w-full aspect-square rounded-full bg-gradient-to-br ${color} cursor-pointer transition-transform hover:scale-110 ${newCollectionColor === color ? 'ring-2 ring-textPrimary ring-offset-2 ring-offset-background' : ''}`}
                     />
                   ))}
                 </div>
@@ -189,14 +189,14 @@ export default function CollectionsPage() {
                 <button 
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="flex-1 px-4 py-3 bg-surface text-textSecondary rounded-xl font-medium hover:bg-white/5 transition-colors"
+                  className="flex-1 px-4 py-3 bg-surface text-textSecondary rounded-xl font-medium hover:bg-textPrimary/5 transition-colors"
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit"
                   disabled={isCreating || !newCollectionName.trim()}
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-medium hover:shadow-[0_0_20px_rgba(108,71,255,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="flex-1 px-4 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-medium hover:shadow-[0_0_20px_rgba(var(--primary),0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                   {isCreating ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Create'}
                 </button>
