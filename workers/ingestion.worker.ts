@@ -28,7 +28,14 @@ export const worker = new Worker<IngestionJobData>(
       throw error;
     }
   },
-  { connection: redis, concurrency: 5 }
+  { 
+    connection: redis, 
+    concurrency: 5,
+    limiter: {
+      max: 14, // Max 14 jobs per minute to stay under the 15 RPM Gemini Free Tier limit (leaving 1 for chat)
+      duration: 60000, // 60 seconds
+    }
+  }
 );
 
 worker.on('failed', (job, err) => {
