@@ -2,25 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 240, 240, 255;
-  --background-start-rgb: 5, 5, 16;
-  --background-end-rgb: 5, 5, 16;
+@layer base {
+  :root, [data-theme="deep-space"] {
+    --background: 5 5 16;
+    --surface: 15 17 23;
+    --primary: 108 71 255;
+    --secondary: 0 212 255;
+    --accent: 255 107 53;
+    --textPrimary: 240 240 255;
+    --textSecondary: 139 143 168;
+    --glass: 255 255 255;
+    --glass-opacity: 0.05;
+  }
+
+  [data-theme="light-matter"] {
+    --background: 248 249 250;
+    --surface: 255 255 255;
+    --primary: 94 53 177;
+    --secondary: 2 136 209;
+    --accent: 230 74 25;
+    --textPrimary: 26 26 36;
+    --textSecondary: 90 94 115;
+    --glass: 0 0 0;
+    --glass-opacity: 0.03;
+  }
+
+  [data-theme="nebula"] {
+    --background: 10 25 47;
+    --surface: 17 34 64;
+    --primary: 100 255 218;
+    --secondary: 72 176 247;
+    --accent: 255 112 67;
+    --textPrimary: 230 241 255;
+    --textSecondary: 136 146 176;
+    --glass: 255 255 255;
+    --glass-opacity: 0.05;
+  }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
+  color: rgb(var(--textPrimary));
+  background: rgb(var(--background));
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 @layer utilities {
   .glass-panel {
-    @apply bg-glass backdrop-blur-[20px] border border-white/10 rounded-2xl;
+    @apply bg-surface/40 backdrop-blur-[20px] border border-textPrimary/10 rounded-2xl;
   }
   
   .glass-card {
-    @apply bg-surface/80 backdrop-blur-md border border-white/5 rounded-xl shadow-xl transition-all duration-300;
+    @apply bg-surface/80 backdrop-blur-md border border-textPrimary/5 rounded-xl shadow-xl transition-all duration-300;
   }
   
   .text-gradient {
@@ -34,12 +67,12 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #050510;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #6C47FF;
+  background: rgb(var(--primary));
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #00D4FF;
+  background: rgb(var(--secondary));
 }

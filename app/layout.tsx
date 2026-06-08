@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from '@clerk/nextjs'
+import { ThemeProvider } from "next-themes";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" });
@@ -19,9 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
-        <body className="bg-background text-textPrimary antialiased min-h-screen">
-          {children}
+      <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+        <body className="bg-background text-textPrimary antialiased min-h-screen transition-colors duration-300">
+          <ThemeProvider attribute="data-theme" defaultTheme="deep-space" themes={['deep-space', 'light-matter', 'nebula']}>
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

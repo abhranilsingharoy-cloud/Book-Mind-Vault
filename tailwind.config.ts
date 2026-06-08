@@ -9,14 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#050510",
-        surface: "#0F1117",
-        primary: "#6C47FF",
-        secondary: "#00D4FF",
-        accent: "#FF6B35",
-        textPrimary: "#F0F0FF",
-        textSecondary: "#8B8FA8",
-        glass: "rgba(255, 255, 255, 0.05)",
+        background: "rgb(var(--background) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        primary: "rgb(var(--primary) / <alpha-value>)",
+        secondary: "rgb(var(--secondary) / <alpha-value>)",
+        accent: "rgb(var(--accent) / <alpha-value>)",
+        textPrimary: "rgb(var(--textPrimary) / <alpha-value>)",
+        textSecondary: "rgb(var(--textSecondary) / <alpha-value>)",
+        glass: "rgba(var(--glass), var(--glass-opacity))",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],
