@@ -92,4 +92,9 @@ Book Mind Vault is an intelligent, AI-powered bookmark manager and personal know
 
 ---
 
+<<<<<<< Updated upstream
 **Developed by Abhranil Singha Roy**
+=======
+**Desigend and Developed by Abhranil Singha Roy**
+hghhhhhh
+>>>>>>> Stashed changes
