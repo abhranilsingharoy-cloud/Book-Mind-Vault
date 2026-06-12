@@ -1,4 +1,4 @@
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request) => {
   if (request.action === "show-toast") {
     const toast = document.createElement('div');
     toast.textContent = request.message;

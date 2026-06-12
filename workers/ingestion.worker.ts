@@ -18,7 +18,7 @@ export const worker = new Worker<IngestionJobData>(
     const { bookmarkId, userId, url } = job.data;
     console.log(`Processing job ${job.id} for bookmark ${bookmarkId}`);
     try {
-      await ai.onBookmarkSaved(userId, bookmarkId, url);
+      await ai.onBookmarkSaved(userId, url);
       return { success: true };
     } catch (error: any) {
       console.error(`Job ${job.id} failed:`, error.message);
@@ -29,7 +29,7 @@ export const worker = new Worker<IngestionJobData>(
     }
   },
   { 
-    connection: redis, 
+    connection: redis as any,
     concurrency: 5,
     limiter: {
       max: 14, // Max 14 jobs per minute to stay under the 15 RPM Gemini Free Tier limit (leaving 1 for chat)

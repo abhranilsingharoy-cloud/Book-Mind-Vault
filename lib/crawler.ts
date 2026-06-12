@@ -35,7 +35,7 @@ export async function crawlUrl(url: string) {
 
     return {
       title: article.title,
-      textContent: article.textContent.trim(),
+      textContent: article.textContent?.trim() || '',
       siteName: article.siteName,
       byline: article.byline,
       faviconUrl,

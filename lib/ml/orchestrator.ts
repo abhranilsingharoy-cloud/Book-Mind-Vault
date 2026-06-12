@@ -44,8 +44,8 @@ export class BookMindVaultAI {
 
     // 3. Summarize & Tag (Parallel)
     const [summary, tags] = await Promise.all([
-      this.summarizer.summarize(title, textContent),
-      this.tagger.generateAllTags(url, title, textContent)
+      this.summarizer.summarize(title || '', textContent),
+      this.tagger.generateAllTags(url, title || '', textContent)
     ]);
 
     // 4. Chunk & Embed
@@ -59,7 +59,7 @@ export class BookMindVaultAI {
       bookmarkId,
       userId,
       url,
-      title,
+      title: title || '',
       chunkIndex: i,
       totalChunks: chunks.length,
       chunkText,

@@ -10,7 +10,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "save-quote" && info.selectionText) {
-    saveToBook Mind Vault({
+    saveToBookMindVault({
       url: tab?.url || '',
       title: tab?.title || '',
       selectedText: info.selectionText
@@ -20,7 +20,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
 chrome.commands.onCommand.addListener((command, tab) => {
   if (command === "save-bookmark") {
-    saveToBook Mind Vault({
+    saveToBookMindVault({
       url: tab?.url || '',
       title: tab?.title || '',
       selectedText: ''
@@ -28,7 +28,7 @@ chrome.commands.onCommand.addListener((command, tab) => {
   }
 });
 
-async function saveToBook Mind Vault(data: { url: string, title: string, selectedText: string }, tabId?: number) {
+async function saveToBookMindVault(data: { url: string, title: string, selectedText: string }, tabId?: number) {
   try {
     const { token } = await chrome.storage.local.get('token');
     
